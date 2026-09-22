@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -12,11 +13,11 @@ public class UserService {
         List<String> results = new ArrayList<>();
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "password");
-            Statement stmt = conn.createStatement();
+            PreparedStatement stmt = conn.prepareStatement("SELECT username FROM users WHERE username = ?");
 
             // 위험: 외부 입력을 그대로 문자열 결합하여 SQL Injection 취약점 발생
-            String query = "SELECT username FROM users WHERE username = '" + keyword + "'";
-            ResultSet rs = stmt.executeQuery(query);
+            stmt.setString(1, keyword);
+            ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 results.add(rs.getString("username"));
