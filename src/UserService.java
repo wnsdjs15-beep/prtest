@@ -25,7 +25,7 @@ public class UserService {
 
             // rs, stmt, conn close() 누락으로 인한 DB 커넥션 락 발생 가능
         } catch (Exception e) {
-            e.printStackTrace();
+            
         }
         return results;
     }
